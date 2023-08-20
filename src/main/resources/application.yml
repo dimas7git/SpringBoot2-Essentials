@@ -1,0 +1,4 @@
+# Configuração para tratamento de erros e exibição de pilha de chamadas em caso de erro
+server:
+    error:
+        include-stacktrace: on_param

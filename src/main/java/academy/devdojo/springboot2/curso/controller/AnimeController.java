@@ -4,7 +4,9 @@ package academy.devdojo.springboot2.curso.controller;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,11 +27,21 @@ public class AnimeController {
 
     // Mapeando a URL localhost:8080/animes para este método
     @GetMapping
-    public List<Anime> list() {
+    public ResponseEntity<List<Anime>> list() {
         // Registrando uma mensagem de log com a data e hora atual formatada
         log.info(dateUtil.formatLocalDateTimeToDatabaseStyle(LocalDateTime.now()));
 
-        // Chama o serviço para listar todos os animes
-        return animeService.listAll();
+        // Chama o serviço para listar todos os animes e retorna com status OK
+        return ResponseEntity.ok(animeService.listAll());
+    }
+    
+    // Mapeando a URL localhost:8080/animes/{id} para este método
+    @GetMapping(path = "/{id}")
+    public ResponseEntity<Anime> findById(@PathVariable long id) {
+        // Registrando uma mensagem de log com a data e hora atual formatada
+        log.info(dateUtil.formatLocalDateTimeToDatabaseStyle(LocalDateTime.now()));
+
+        // Chama o serviço para buscar um anime pelo ID e retorna com status OK se encontrado
+        return ResponseEntity.ok(animeService.findById(id));
     }
 }
