@@ -1,7 +1,9 @@
 // Classe que implementa a lógica das regras de negócio relacionadas a animes
 package academy.devdojo.springboot2.curso.service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -11,7 +13,10 @@ import academy.devdojo.springboot2.curso.domain.Anime;
 
 @Service // Indica que esta classe é um componente de serviço Spring
 public class AnimeService {
-    private List<Anime> animes = List.of(new Anime(1L, "One Piece"), new Anime(2L, "Naruto"));
+    private static List<Anime> animes;
+    static{
+          animes = new ArrayList<>(List.of(new Anime(1L, "One Piece"), new Anime(2L, "Naruto")));
+    }
     
     // Método que retorna uma lista de todos os animes (exemplo de regra de negócio)
     public List<Anime> listAll() {
@@ -26,5 +31,11 @@ public class AnimeService {
             .filter(anime -> anime.getId().equals(id))
             .findFirst()
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Anime not found"));
+    }
+
+    public Anime save(Anime anime) {
+        anime.setId(ThreadLocalRandom.current().nextLong(3,100000));
+        animes.add(anime);
+        return anime;
     }
 }
