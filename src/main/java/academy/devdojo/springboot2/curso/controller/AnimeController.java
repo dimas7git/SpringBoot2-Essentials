@@ -48,9 +48,10 @@ public class AnimeController {
         return ResponseEntity.ok(animeService.findById(id));
     }
 
-
+    // Mapeando a URL localhost:8080/animes para este método com o método HTTP POST
     @PostMapping
     public ResponseEntity<Anime> save(@RequestBody Anime anime){
+        // Chama o serviço para salvar um novo anime e retorna com status CREATED
         return new ResponseEntity<>(animeService.save(anime), HttpStatus.CREATED);
     }
 }

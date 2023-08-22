@@ -14,8 +14,10 @@ import academy.devdojo.springboot2.curso.domain.Anime;
 @Service // Indica que esta classe é um componente de serviço Spring
 public class AnimeService {
     private static List<Anime> animes;
-    static{
-          animes = new ArrayList<>(List.of(new Anime(1L, "One Piece"), new Anime(2L, "Naruto")));
+    
+    // Inicialização estática da lista de animes com alguns valores pré-definidos
+    static {
+        animes = new ArrayList<>(List.of(new Anime(1L, "One Piece"), new Anime(2L, "Naruto")));
     }
     
     // Método que retorna uma lista de todos os animes (exemplo de regra de negócio)
@@ -33,9 +35,15 @@ public class AnimeService {
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Anime not found"));
     }
 
+    // Método para salvar um novo anime na lista
     public Anime save(Anime anime) {
-        anime.setId(ThreadLocalRandom.current().nextLong(3,100000));
+        // Gera um ID aleatório para o anime
+        anime.setId(ThreadLocalRandom.current().nextLong(3, 100000));
+        
+        // Adiciona o anime à lista
         animes.add(anime);
+        
+        // Retorna o anime salvo com o novo ID
         return anime;
     }
 }
