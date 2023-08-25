@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -53,5 +54,13 @@ public class AnimeController {
     public ResponseEntity<Anime> save(@RequestBody Anime anime){
         // Chama o serviço para salvar um novo anime e retorna com status CREATED
         return new ResponseEntity<>(animeService.save(anime), HttpStatus.CREATED);
+    }
+
+    // Mapeando a URL localhost:8080/animes/{id} para este método com o método HTTP DELETE
+    @DeleteMapping(path = "/{id}")
+    public ResponseEntity<Void> delete(@PathVariable long id){
+        // Chama o serviço para deletar um anime pelo ID e retorna com status NO_CONTENT
+        animeService.delete(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

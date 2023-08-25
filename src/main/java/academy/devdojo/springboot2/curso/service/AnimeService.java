@@ -46,4 +46,10 @@ public class AnimeService {
         // Retorna o anime salvo com o novo ID
         return anime;
     }
+
+    // Método para deletar um anime da lista pelo ID
+    public void delete(long id) {
+        // Busca o anime na lista pelo ID e remove se encontrado
+        animes.remove(findById(id));
+    }
 }
