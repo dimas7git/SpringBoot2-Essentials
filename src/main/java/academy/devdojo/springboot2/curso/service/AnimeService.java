@@ -53,7 +53,9 @@ public class AnimeService {
         animes.remove(findById(id));
     }
 
+    // Método para substituir um anime na lista pelo ID
     public void replace(Anime anime) {
+        // Remove o anime atual pelo ID e adiciona o novo anime
         delete(anime.getId());
         animes.add(anime);
     }

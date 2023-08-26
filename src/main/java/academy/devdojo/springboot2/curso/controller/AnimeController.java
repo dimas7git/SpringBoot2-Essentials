@@ -64,9 +64,11 @@ public class AnimeController {
         animeService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-    
+
+    // Mapeando a URL localhost:8080/animes para este método com o método HTTP PUT
     @PutMapping
     public ResponseEntity<Void> replace(@RequestBody Anime anime){
+        // Chama o serviço para substituir um anime pelo ID e retorna com status NO_CONTENT
         animeService.replace(anime);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
