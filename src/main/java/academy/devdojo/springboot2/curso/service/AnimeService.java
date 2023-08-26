@@ -52,4 +52,9 @@ public class AnimeService {
         // Busca o anime na lista pelo ID e remove se encontrado
         animes.remove(findById(id));
     }
+
+    public void replace(Anime anime) {
+        delete(anime.getId());
+        animes.add(anime);
+    }
 }
