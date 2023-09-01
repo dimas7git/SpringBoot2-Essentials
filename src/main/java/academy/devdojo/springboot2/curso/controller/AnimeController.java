@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import academy.devdojo.springboot2.curso.domain.Anime;
+import academy.devdojo.springboot2.curso.requests.AnimePostRequestBody;
+import academy.devdojo.springboot2.curso.requests.AnimePutRequestBody;
 import academy.devdojo.springboot2.curso.service.AnimeService;
 import academy.devdojo.springboot2.curso.util.DateUtil;
 import lombok.RequiredArgsConstructor;
@@ -43,18 +45,15 @@ public class AnimeController {
     // Mapeando a URL localhost:8080/animes/{id} para este método
     @GetMapping(path = "/{id}")
     public ResponseEntity<Anime> findById(@PathVariable long id) {
-        // Registrando uma mensagem de log com a data e hora atual formatada
-        log.info(dateUtil.formatLocalDateTimeToDatabaseStyle(LocalDateTime.now()));
-
         // Chama o serviço para buscar um anime pelo ID e retorna com status OK se encontrado
-        return ResponseEntity.ok(animeService.findById(id));
+        return ResponseEntity.ok(animeService.findByIdOrThrowBadRequestException(id));
     }
 
     // Mapeando a URL localhost:8080/animes para este método com o método HTTP POST
     @PostMapping
-    public ResponseEntity<Anime> save(@RequestBody Anime anime){
+    public ResponseEntity<Anime> save(@RequestBody AnimePostRequestBody animePostRequestBody){
         // Chama o serviço para salvar um novo anime e retorna com status CREATED
-        return new ResponseEntity<>(animeService.save(anime), HttpStatus.CREATED);
+        return new ResponseEntity<>(animeService.save(animePostRequestBody), HttpStatus.CREATED);
     }
 
     // Mapeando a URL localhost:8080/animes/{id} para este método com o método HTTP DELETE
@@ -67,9 +66,9 @@ public class AnimeController {
 
     // Mapeando a URL localhost:8080/animes para este método com o método HTTP PUT
     @PutMapping
-    public ResponseEntity<Void> replace(@RequestBody Anime anime){
+    public ResponseEntity<Void> replace(@RequestBody AnimePutRequestBody animePutRequestBody){
         // Chama o serviço para substituir um anime pelo ID e retorna com status NO_CONTENT
-        animeService.replace(anime);
+        animeService.replace(animePutRequestBody);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

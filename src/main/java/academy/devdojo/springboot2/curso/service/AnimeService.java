@@ -10,53 +10,47 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import academy.devdojo.springboot2.curso.domain.Anime;
+import academy.devdojo.springboot2.curso.repository.AnimeRepository;
+import academy.devdojo.springboot2.curso.requests.AnimePostRequestBody;
+import academy.devdojo.springboot2.curso.requests.AnimePutRequestBody;
+import lombok.RequiredArgsConstructor;
 
 @Service // Indica que esta classe é um componente de serviço Spring
+@RequiredArgsConstructor
 public class AnimeService {
-    private static List<Anime> animes;
     
-    // Inicialização estática da lista de animes com alguns valores pré-definidos
-    static {
-        animes = new ArrayList<>(List.of(new Anime(1L, "One Piece"), new Anime(2L, "Naruto")));
-    }
-    
-    // Método que retorna uma lista de todos os animes (exemplo de regra de negócio)
+    private final AnimeRepository animeRepository;
     public List<Anime> listAll() {
         // Retorna a lista de animes pré-definida
-        return animes;
+        return animeRepository.findAll();
     }
 
     // Método que busca um anime pelo ID (exemplo de regra de negócio)
-    public Anime findById(long id) {
+    public Anime findByIdOrThrowBadRequestException(long id) {
         // Busca o anime na lista por ID e lança uma exceção caso não seja encontrado
-        return animes.stream()
-            .filter(anime -> anime.getId().equals(id))
-            .findFirst()
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Anime not found"));
+        return animeRepository.findById(id)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Anime not found"));
     }
 
     // Método para salvar um novo anime na lista
-    public Anime save(Anime anime) {
-        // Gera um ID aleatório para o anime
-        anime.setId(ThreadLocalRandom.current().nextLong(3, 100000));
-        
-        // Adiciona o anime à lista
-        animes.add(anime);
-        
-        // Retorna o anime salvo com o novo ID
-        return anime;
+    public Anime save(AnimePostRequestBody animePostRequestBody) {
+        Anime anime = Anime.builder().name(animePostRequestBody.getName()).build();
+        return animeRepository.save(anime);
     }
 
     // Método para deletar um anime da lista pelo ID
     public void delete(long id) {
-        // Busca o anime na lista pelo ID e remove se encontrado
-        animes.remove(findById(id));
+        animeRepository.delete(findByIdOrThrowBadRequestException(id));
     }
 
     // Método para substituir um anime na lista pelo ID
-    public void replace(Anime anime) {
-        // Remove o anime atual pelo ID e adiciona o novo anime
-        delete(anime.getId());
-        animes.add(anime);
+    public void replace(AnimePutRequestBody animePutRequestBody) {
+        Anime savedAnime = findByIdOrThrowBadRequestException(animePutRequestBody.getId());
+        Anime anime = Anime.builder()
+            .id(savedAnime.getId())
+            .name(animePutRequestBody.getName())
+            .build();
+
+        animeRepository.save(anime);
     }
 }
