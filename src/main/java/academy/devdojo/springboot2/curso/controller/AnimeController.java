@@ -6,16 +6,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.bind.annotation.*;
 import academy.devdojo.springboot2.curso.domain.Anime;
 import academy.devdojo.springboot2.curso.requests.AnimePostRequestBody;
 import academy.devdojo.springboot2.curso.requests.AnimePutRequestBody;
@@ -50,10 +41,11 @@ public class AnimeController {
         return ResponseEntity.ok(animeService.findByIdOrThrowBadRequestException(id));
     }
 
-     @GetMapping(path = "/find/{nome}")
+    // Mapeando a URL localhost:8080/animes/find?name={name} para este método
+    @GetMapping(path = "/find")
     public ResponseEntity<List<Anime>> findByName(@RequestParam String name) {
-        // Chama o serviço para buscar um anime pelo ID e retorna com status OK se encontrado
-        return ResponseEntity.ok(animeService.findByNAme(name));
+        // Chama o serviço para buscar um anime pelo nome e retorna com status OK se encontrado
+        return ResponseEntity.ok(animeService.findByName(name));
     }
 
     // Mapeando a URL localhost:8080/animes para este método com o método HTTP POST
