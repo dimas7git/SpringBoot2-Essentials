@@ -26,6 +26,9 @@ public class AnimeService {
         return animeRepository.findAll();
     }
 
+     public List<Anime> findByNAme(String name) {
+        return animeRepository.findByName(name);
+    }
     // Método para buscar um anime pelo ID ou lançar uma exceção se não encontrado
     public Anime findByIdOrThrowBadRequestException(long id) {
         return animeRepository.findById(id)

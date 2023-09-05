@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import academy.devdojo.springboot2.curso.domain.Anime;
@@ -47,6 +48,12 @@ public class AnimeController {
     public ResponseEntity<Anime> findById(@PathVariable long id) {
         // Chama o serviço para buscar um anime pelo ID e retorna com status OK se encontrado
         return ResponseEntity.ok(animeService.findByIdOrThrowBadRequestException(id));
+    }
+
+     @GetMapping(path = "/find/{nome}")
+    public ResponseEntity<List<Anime>> findByName(@RequestParam String name) {
+        // Chama o serviço para buscar um anime pelo ID e retorna com status OK se encontrado
+        return ResponseEntity.ok(animeService.findByNAme(name));
     }
 
     // Mapeando a URL localhost:8080/animes para este método com o método HTTP POST
