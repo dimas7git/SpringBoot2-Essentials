@@ -13,6 +13,7 @@ import academy.devdojo.springboot2.curso.mapper.AnimeMapper;
 import academy.devdojo.springboot2.curso.repository.AnimeRepository;
 import academy.devdojo.springboot2.curso.requests.AnimePostRequestBody;
 import academy.devdojo.springboot2.curso.requests.AnimePutRequestBody;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service // Indica que esta classe é um componente de serviço Spring, permitindo que o Spring a gerencie e a injete em outros componentes quando necessário.
@@ -38,12 +39,14 @@ public class AnimeService {
             .orElseThrow(() -> new BadRequestException("Anime not found"));
     }
 
+    @Transactional
     // Método para salvar um novo anime a partir da requisição AnimePostRequestBody
     public Anime save(AnimePostRequestBody animePostRequestBody) {
         // Converte a requisição em um objeto Anime e o salva no repositório
         return animeRepository.save(AnimeMapper.INSTANCE.toAnime(animePostRequestBody));
     }
 
+    
     // Método para deletar um anime pelo ID
     public void delete(long id) {
         // Chama o método findByIdOrThrowBadRequestException para garantir que o anime existe antes de excluí-lo
